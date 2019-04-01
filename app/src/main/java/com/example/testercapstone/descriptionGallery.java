@@ -14,6 +14,5 @@ public class descriptionGallery extends AppCompatActivity {
         //every new file path you will make a dronemeta object for that file
         File test = new File("test.jpg");
         DroneMeta meta = new DroneMeta(test);
-
     }
 }
