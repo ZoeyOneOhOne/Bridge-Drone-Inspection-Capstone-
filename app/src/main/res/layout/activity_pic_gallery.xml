@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".picGalleryActivity">
+    android:padding="10dp"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
 
+    <!-- create a ImageView and Gallery -->
     <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="240dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="84dp"
-        android:layout_marginLeft="84dp"
-        android:layout_marginTop="156dp"
-        android:background="#cacaca"
-        app:layout_constraintStart_toStartOf="@+id/imagegallery"
-        app:layout_constraintTop_toTopOf="@+id/imagegallery" />
+        android:id="@+id/selectedImageView"
+        android:layout_width="fill_parent"
+        android:layout_height="200dp"
+        android:scaleType="fitXY" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/imagegallery"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+    <Gallery
+        android:id="@+id/simpleGallery"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:unselectedAlpha="0.80" />
 
-</android.support.constraint.ConstraintLayout>
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Download all" />
+
+
+</LinearLayout>

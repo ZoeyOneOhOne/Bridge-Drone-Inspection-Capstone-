@@ -5,13 +5,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import java.io.File;
 
-//The pop up window code was inspired by a Youtuber of the name Angga Risky: https://www.youtube.com/watch?v=eX-TdY6bLdg
+import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btn_Cam;
+    Button btn_Cam,loginbtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,5 +26,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        loginbtn = (Button) findViewById(R.id.loginbtn);
+
+        loginbtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent i = new Intent(getApplicationContext(),picGalleryActivity.class);
+                startActivity(i);
+            }
+        });
     }
+
 }
