@@ -1,5 +1,6 @@
 package com.example.testercapstone;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -28,7 +29,11 @@ public class picGalleryActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // set the selected image in the ImageView
+                Intent i = new Intent(getApplicationContext(),descriptionGallery.class);
                 selectedImageView.setImageResource(images[position]);
+                int j = position;
+                i.putExtra("KEY", j);
+                startActivity(i);
 
             }
         });

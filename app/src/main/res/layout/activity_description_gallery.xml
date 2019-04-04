@@ -1,79 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:baselineAligned="false"
+    android:orientation="vertical"
     tools:context=".descriptionGallery">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/selectedImageView2"
         android:layout_width="411dp"
-        android:layout_height="442dp"
+        android:layout_height="245dp"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="0dp"
         tools:srcCompat="@tools:sample/backgrounds/scenic[2]" />
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="395dp"
-        android:layout_height="wrap_content"
-        android:hint="Title"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="494dp">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <android.support.design.widget.TextInputEditText
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="title"
-            android:singleLine="true" />
-    </android.support.design.widget.TextInputLayout>
+            android:orientation="vertical" >
 
-    <EditText
-        android:id="@+id/editText2"
-        android:layout_width="394dp"
-        android:layout_height="77dp"
-        android:ems="10"
-        android:hint="Desciption"
-        android:inputType="textMultiLine"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="593dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Title:"
-        android:textColor="@color/design_default_color_primary_dark"
-        android:textSize="24sp"
-        app:fontFamily="monospace"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="460dp" />
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Title:"
+                    android:textColor="@color/design_default_color_primary_dark"
+                    android:textSize="24sp"
+                    app:fontFamily="monospace"
+                    tools:layout_editor_absoluteX="8dp"
+                    tools:layout_editor_absoluteY="460dp" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Description:"
-        android:textColor="@color/design_default_color_primary_dark"
-        android:textSize="24sp"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="561dp" />
+                <EditText
+                    android:id="@+id/editText2"
+                    android:layout_width="394dp"
+                    android:layout_height="77dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="Desciption"
+                    android:inputType="textMultiLine"
+                    android:paddingBottom="10dp"
+                    tools:layout_editor_absoluteX="8dp"
+                    tools:layout_editor_absoluteY="593dp" />
 
-    <Button
-        android:id="@+id/saveButton"
-        style="@android:style/Widget.Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save"
-        tools:layout_editor_absoluteX="231dp"
-        tools:layout_editor_absoluteY="677dp" />
+            </LinearLayout>
 
-    <Button
-        android:id="@+id/button2"
-        style="@android:style/Widget.Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Delete"
-        tools:layout_editor_absoluteX="319dp"
-        tools:layout_editor_absoluteY="677dp" />
-</android.support.constraint.ConstraintLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="268dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Description:"
+                    android:textColor="@color/design_default_color_primary_dark"
+                    android:textSize="24sp"
+                    tools:layout_editor_absoluteX="8dp"
+                    tools:layout_editor_absoluteY="561dp" />
+
+                <EditText
+                    android:id="@+id/editText5"
+                    android:layout_width="394dp"
+                    android:layout_height="77dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="Desciption"
+                    android:inputType="textMultiLine"
+                    tools:layout_editor_absoluteX="8dp"
+                    tools:layout_editor_absoluteY="593dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/button2"
+                    style="@android:style/Widget.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Delete"
+                    tools:layout_editor_absoluteX="319dp"
+                    tools:layout_editor_absoluteY="677dp" />
+
+                <Button
+                    android:id="@+id/saveButton"
+                    style="@android:style/Widget.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Save"
+                    tools:layout_editor_absoluteX="231dp"
+                    tools:layout_editor_absoluteY="677dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
