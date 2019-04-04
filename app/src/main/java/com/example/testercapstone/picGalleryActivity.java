@@ -37,5 +37,10 @@ public class picGalleryActivity extends AppCompatActivity {
 
             }
         });
+
+        Intent i = getIntent();
+        final int b = i.getIntExtra("STRING",0);
+
+        selectedImageView.setImageResource(images[b]);
     }
 }
