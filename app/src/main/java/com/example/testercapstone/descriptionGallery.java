@@ -27,9 +27,14 @@ public class descriptionGallery extends AppCompatActivity {
 
         TempStor stor = new TempStor(getApplicationContext());
 
+        stor.recreate(); //Just for testing
+
         stor.add(test.getPath(),0,"Test Title","This is a test comment.");
 
-        MetaData imgMeta = stor.getByLocation(test.getPath());
+        editText2 = (EditText) findViewById(R.id.editText2);
+        editText5 = (EditText) findViewById(R.id.editText5);
+
+        MetaData imgMeta = stor.getAll()[0];
         editText2.setText(imgMeta.title);
         editText5.setText(imgMeta.comment);
 

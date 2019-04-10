@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TempStor {
-    private static final String SQL_CREATE_ENTRIES = "CREATE TABLE Photo (Photo_ID INTEGER PRIMARY KEY, Location TEXT, Inspecction_ID int, Title TEXT, Comment TEXT)";
+    private static final String SQL_CREATE_ENTRIES = "CREATE TABLE Photo (Photo_ID INTEGER PRIMARY KEY, Location TEXT, Inspection_ID int, Title TEXT, Comment TEXT)";
     private static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS Photo";
 
     DbHelper dbHelper;
@@ -20,7 +20,7 @@ public class TempStor {
 
     public class DbHelper extends SQLiteOpenHelper {
         public static final int DATABASE_VERSION = 1;
-        public static final String DATABASE_NAME = "com.example.testercapstone.TempStor.db";
+        public static final String DATABASE_NAME = "TempStor.db";
 
         public DbHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -38,6 +38,12 @@ public class TempStor {
         }
     }
 
+    public void recreate(){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.execSQL(SQL_DELETE_ENTRIES);
+        db.execSQL(SQL_CREATE_ENTRIES);
+    }
+
     public long add(String location, int inspID, String title, String comment){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -47,7 +53,10 @@ public class TempStor {
         values.put("Title", title);
         values.put("Comment", comment);
 
-        return db.insert("Photo",null, values);
+        long success = db.insert("Photo",null, values);
+
+        while(db.isDbLockedByCurrentThread());
+        return success;
     }
 
     public MetaData[] getAll(){
@@ -57,7 +66,7 @@ public class TempStor {
 
         List<MetaData> entries = new ArrayList<MetaData>();
 
-        while(cursor.moveToNext() == true){
+        while(cursor.moveToNext()){
             MetaData newMeta = new MetaData();
             newMeta.photoID = cursor.getInt(0);
             newMeta.location = cursor.getString(1);
@@ -66,6 +75,7 @@ public class TempStor {
             newMeta.comment = cursor.getString(4);
             entries.add(newMeta);
         }
+        cursor.close();
 
         MetaData[] temp = new MetaData[2];
         return entries.toArray(temp);
@@ -77,6 +87,7 @@ public class TempStor {
         String[] selectionArgs = {"" + photoID};
 
         Cursor cursor = db.query("Photo",null,"Photo_ID = ?",selectionArgs,null,null,null);
+        cursor.moveToNext();
 
         MetaData newMeta = new MetaData();
         newMeta.photoID = cursor.getInt(0);
@@ -94,6 +105,7 @@ public class TempStor {
         String[] selectionArgs = {location};
 
         Cursor cursor = db.query("Photo",null,"Location = ?",selectionArgs,null,null,null);
+        cursor.moveToNext();
 
         MetaData newMeta = new MetaData();
         newMeta.photoID = cursor.getInt(0);
@@ -104,4 +116,5 @@ public class TempStor {
 
         return newMeta;
     }
+
 }
