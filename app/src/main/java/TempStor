@@ -1,6 +1,10 @@
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TempStor{
     private static final String SQL_CREATE_ENTRIES = "CREATE TABLE Photo (Photo_ID INTEGER PRIMARY KEY, Location TEXT, Inspecction_ID int, Title TEXT, Comment TEXT)";
@@ -42,5 +46,60 @@ public class TempStor{
         values.put("Comment", comment);
 
         return db.insert("Photo",null, values);
+    }
+
+    public MetaData[] getAll(){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor cursor = db.query("Photo",null,null,null,null,null,null);
+
+        List<MetaData> entries = new ArrayList<MetaData>();
+
+        while(cursor.moveToNext() == true){
+            MetaData newMeta = new MetaData();
+            newMeta.photoID = cursor.getInt(0);
+            newMeta.location = cursor.getString(1);
+            newMeta.inspID = cursor.getInt(2);
+            newMeta.title = cursor.getString(3);
+            newMeta.comment = cursor.getString(4);
+            entries.add(newMeta);
+        }
+
+        MetaData[] temp = new MetaData[2];
+        return entries.toArray(temp);
+    }
+
+    public MetaData getByPhotoID(int photoID){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String[] selectionArgs = {"" + photoID};
+
+        Cursor cursor = db.query("Photo",null,"Photo_ID = ?",selectionArgs,null,null,null);
+
+        MetaData newMeta = new MetaData();
+        newMeta.photoID = cursor.getInt(0);
+        newMeta.location = cursor.getString(1);
+        newMeta.inspID = cursor.getInt(2);
+        newMeta.title = cursor.getString(3);
+        newMeta.comment = cursor.getString(4);
+
+        return newMeta;
+    }
+
+    public MetaData getByLocation(String location){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String[] selectionArgs = {location};
+
+        Cursor cursor = db.query("Photo",null,"Location = ?",selectionArgs,null,null,null);
+
+        MetaData newMeta = new MetaData();
+        newMeta.photoID = cursor.getInt(0);
+        newMeta.location = cursor.getString(1);
+        newMeta.inspID = cursor.getInt(2);
+        newMeta.title = cursor.getString(3);
+        newMeta.comment = cursor.getString(4);
+
+        return newMeta;
     }
 }
