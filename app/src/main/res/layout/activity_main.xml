@@ -10,64 +10,31 @@
     <TextView
         android:id="@+id/textTitle"
         android:layout_width="wrap_content"
-        android:layout_height="81dp"
-        android:layout_marginStart="70dp"
-        android:layout_marginLeft="70dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="71dp"
-        android:layout_marginRight="71dp"
-        android:layout_marginBottom="8dp"
+        android:layout_height="56dp"
         android:gravity="center"
         android:text="@string/inspection_number"
         android:textSize="32sp"
-        app:layout_constraintBottom_toTopOf="@+id/editText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:layout_editor_absoluteX="69dp"
+        tools:layout_editor_absoluteY="107dp" />
 
     <EditText
         android:id="@+id/editText"
         android:layout_width="213dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="99dp"
-        android:layout_marginLeft="99dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="99dp"
-        android:layout_marginRight="99dp"
-        android:layout_marginBottom="332dp"
+        android:layout_height="56dp"
         android:autofillHints=""
         android:ems="10"
         android:gravity="center"
         android:hint="Inspection Number"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textTitle" />
+        tools:layout_editor_absoluteX="99dp"
+        tools:layout_editor_absoluteY="261dp" />
 
     <Button
         android:id="@+id/loginbtn"
-        android:layout_width="88dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="11dp"
-        android:layout_marginLeft="11dp"
-        android:layout_marginTop="11dp"
-        android:layout_marginBottom="329dp"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/editText"
-        app:layout_constraintTop_toBottomOf="@+id/textTitle" />
+        android:layout_width="162dp"
+        android:layout_height="56dp"
+        android:text="button"
+        tools:layout_editor_absoluteX="125dp"
+        tools:layout_editor_absoluteY="430dp" />
 
-    <Button
-        android:id="@+id/btn_Cam"
-        android:layout_width="145dp"
-        android:layout_height="51dp"
-        android:layout_marginBottom="106dp"
-        android:text="Camera Click"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 </android.support.constraint.ConstraintLayout>

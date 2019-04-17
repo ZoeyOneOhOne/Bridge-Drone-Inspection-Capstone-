@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">testerCapstone</string>
     <string name="inspection_number">Inspection Number</string>
+    <string name="button">Button</string>
 </resources>

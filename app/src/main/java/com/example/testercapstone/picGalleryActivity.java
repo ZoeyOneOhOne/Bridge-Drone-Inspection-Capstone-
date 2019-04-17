@@ -1,18 +1,24 @@
 package com.example.testercapstone;
 
 import android.content.Intent;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.Gallery;
 import android.widget.ImageView;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 public class picGalleryActivity extends AppCompatActivity {
 
     Gallery simpleGallery;
     CustomeGalleryAdapter customGalleryAdapter;
     ImageView selectedImageView;
+    Button readButton;
     // array of images
     int[] images = {R.drawable.image1, R.drawable.image2, R.drawable.image3, R.drawable.image4};
     @Override
@@ -42,5 +48,23 @@ public class picGalleryActivity extends AppCompatActivity {
         final int b = i.getIntExtra("STRING",0);
 
         selectedImageView.setImageResource(images[b]);
+
+        //Implementing Cole's read/write stuff
+
+
+        readButton = (Button) findViewById(R.id.readButton);
+
+        readButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), PopupActivity.class);
+                startActivity(i);
+            }
+        });
+
     }
+
+
+
+
 }
