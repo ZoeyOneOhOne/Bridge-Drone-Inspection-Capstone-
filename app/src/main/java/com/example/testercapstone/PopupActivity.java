@@ -10,9 +10,11 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.content.Intent;
 import android.util.DisplayMetrics;
 import android.widget.ImageView;
+import java.io.File;
 //NOTE: Alt + Enter will auto import the one you need.
 
 public class PopupActivity extends AppCompatActivity {
@@ -42,9 +44,19 @@ public class PopupActivity extends AppCompatActivity {
 
         //Cole's code to access the DJI GO 4 folder and put the images on a bitmap in an imageView.
 
-        Bitmap bitmap = BitmapFactory.decodeFile("/My Files/Device Storage/DJI/dji.go.v4/CACHE_IMAGE");
+        EditText editText3 = (EditText)findViewById(R.id.editText3);
+
+
+        File dir = Environment.getExternalStorageDirectory();
+        File[] test = new File(dir.getPath() + "/DJI/dji.go.v4/CACHE_IMAGE").listFiles();
+        String list = "";
+        for(File file:test){
+            list += file.getName();
+        }
+        editText3.setText(list);
+        Bitmap bitmap = BitmapFactory.decodeFile(dir.getPath() + "/DJI/dji.go.v4/CACHE_IMAGE/screen_0b71ffdf1b8a063d_1555435905867.jpg");
         ImageView imageView = (ImageView) this.findViewById(R.id.imageView3);
-        imageView.setImageBitmap(BitmapFactory.decodeFile("/My Files/Device Storage/DJI/dji.go.v4/CACHE_IMAGE/screen_77c8d7e08d7dc8ba_1555445872689"));
+        imageView.setImageBitmap(bitmap);
     }
 
 
