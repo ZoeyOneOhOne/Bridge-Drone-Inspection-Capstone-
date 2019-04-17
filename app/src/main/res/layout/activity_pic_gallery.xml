@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="left"
-    android:padding="10dp"
     android:orientation="vertical"
+    android:padding="10dp"
     tools:context=".MainActivity">
 
     <!-- create a ImageView and Gallery -->
@@ -32,8 +32,7 @@
         android:id="@+id/readButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Read File"
-        android:onClick="readFile"/>
+        android:text="Read File" />
 
 
 </LinearLayout>
