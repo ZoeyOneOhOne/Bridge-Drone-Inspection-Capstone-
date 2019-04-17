@@ -37,4 +37,12 @@
         tools:layout_editor_absoluteX="125dp"
         tools:layout_editor_absoluteY="430dp" />
 
+    <Button
+        android:id="@+id/toWritePage"
+        android:layout_width="197dp"
+        android:layout_height="71dp"
+        android:text="To write test"
+        tools:layout_editor_absoluteX="125dp"
+        tools:layout_editor_absoluteY="562dp" />
+
 </android.support.constraint.ConstraintLayout>

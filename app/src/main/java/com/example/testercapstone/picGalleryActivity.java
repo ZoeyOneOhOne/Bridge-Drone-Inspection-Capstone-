@@ -1,19 +1,32 @@
 package com.example.testercapstone;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Environment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 
 public class picGalleryActivity extends AppCompatActivity {
+
 
     Gallery simpleGallery;
     CustomeGalleryAdapter customGalleryAdapter;
@@ -23,6 +36,8 @@ public class picGalleryActivity extends AppCompatActivity {
     int[] images = {R.drawable.image1, R.drawable.image2, R.drawable.image3, R.drawable.image4};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pic_gallery);
         simpleGallery = (Gallery) findViewById(R.id.simpleGallery); // get the reference of Gallery
@@ -65,6 +80,31 @@ public class picGalleryActivity extends AppCompatActivity {
     }
 
 
+    public boolean checkPermission(String permission){
+        int check = ContextCompat.checkSelfPermission(this, permission);
+        return (check == PackageManager.PERMISSION_GRANTED);
+    }
 
+    //Check if external storage is writeable
+
+    private boolean isExternalStorageWriteable (){
+        if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+            Log.i("State", "Yes, it is writeable!");
+            return true;
+        } else{
+            return false;
+        }
+    }
+
+    //Check if external storage is readable
+
+    private boolean isExternalStorageReadable (){
+        if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(Environment.getExternalStorageState())) {
+            Log.i("State", "Yes, it is readable!");
+            return true;
+        } else{
+            return false;
+        }
+    }
 
 }
