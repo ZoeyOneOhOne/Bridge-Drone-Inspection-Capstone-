@@ -28,5 +28,12 @@
         android:layout_height="wrap_content"
         android:text="Download all" />
 
+    <Button
+        android:id="@+id/readButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Read File"
+        android:onClick="readFile"/>
+
 
 </LinearLayout>
