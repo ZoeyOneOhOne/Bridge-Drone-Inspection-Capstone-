@@ -77,6 +77,9 @@ public class picGalleryActivity extends AppCompatActivity {
             }
         });
 
+        //Testing passing variables between activities
+        int test = getIntent().getIntExtra("Inspection_ID",0);
+        Log.i("Inspection ID","" + test);
     }
 
 
