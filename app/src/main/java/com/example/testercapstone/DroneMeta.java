@@ -1,6 +1,4 @@
 package com.example.testercapstone;
-import android.os.Build;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -120,9 +118,7 @@ public class DroneMeta {
 			newXml = xml + "<" + tagname + ">" + value + "</" + tagname + ">";
 		}
 		metaWrite.updateXmpXml(file, new FileOutputStream(file.getPath() + ".temp"), newXml);
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-			Files.move(Paths.get(file.getPath() + ".temp"), Paths.get(file.getPath()), StandardCopyOption.REPLACE_EXISTING);
-		}
+		Files.move(Paths.get(file.getPath() + ".temp"), Paths.get(file.getPath()), StandardCopyOption.REPLACE_EXISTING);
 	}
 
 	/** Reads data from the given tagname
@@ -157,9 +153,27 @@ public class DroneMeta {
 				dirVal = imgDir.getDoubleValue();
 			else
 				dirVal = 361;
+			TagInfo altTag = new TagInfo("GPSAltitude", 17, TagInfo.FIELD_TYPE_RATIONAL);
+			TiffField imgAlt = GPSdir.findField(altTag);
+			double altVal;
+			if (imgAlt != null)
+				altVal = imgDir.getDoubleValue();
+			else
+				altVal = 0;
+			TagInfo refTag = new TagInfo("GPSAltitudeRef", 17, TagInfo.FIELD_TYPE_BYTE);
+			TiffField altRef = GPSdir.findField(refTag);
+			int refVal;
+			if (altRef != null)
+				refVal = imgDir.getIntValue();
+			else
+				refVal = 0;
+			double alt;
+			if(refVal == 0)
+				alt = altVal;
+			else alt = altVal * -1;
 			double lat = jpgGPS.getLatitudeAsDegreesNorth();
 			double lon = jpgGPS.getLongitudeAsDegreesEast();
-			GPSData data = new GPSData(lat, lon, dirVal);
+			GPSData data = new GPSData(lat, lon, alt, dirVal);
 			return data;
 		} catch (ImageReadException e) {
 			// TODO Auto-generated catch block
