@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        toWritePage = (Button) findViewById(R.id.toWritePage);
+        /*toWritePage = (Button) findViewById(R.id.toWritePage);
 
         toWritePage.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent i = new Intent(getApplicationContext(),Writefile.class);
                 startActivity(i);
             }
-        });
+        });*/
 
 
         loginbtn = (Button) findViewById(R.id.loginbtn);
