@@ -55,6 +55,7 @@ public class PopupActivity extends AppCompatActivity {
         }
         editText3.setText(list);
         Bitmap bitmap = BitmapFactory.decodeFile(dir.getPath() + "/DJI/dji.go.v4/CACHE_IMAGE/screen_0b71ffdf1b8a063d_1555435905867.jpg");
+        Log.i("Image Height", "" + bitmap.getHeight());
         ImageView imageView = (ImageView) this.findViewById(R.id.imageView3);
         imageView.setImageBitmap(bitmap);
     }
