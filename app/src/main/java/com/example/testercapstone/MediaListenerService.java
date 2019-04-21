@@ -10,6 +10,8 @@ import android.util.Log;
 import android.widget.Toast;
 import java.io.File;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 public class MediaListenerService extends Service {
 
     public static FileObserver observer;
@@ -34,25 +36,26 @@ public class MediaListenerService extends Service {
         final String pathToWatch = android.os.Environment.getExternalStorageDirectory().toString() + "/DJI/dji.go.v4/CACHE_IMAGE";
         Toast.makeText(this, "My Service Started and trying to watch " + pathToWatch, Toast.LENGTH_LONG).show();
         final String[] f = new String[1];
+
         observer = new FileObserver(pathToWatch, FileObserver.ALL_EVENTS) { // set up a file observer to watch this directory
             @Override
             public void onEvent(int event, final String file) {
                 if (event == FileObserver.CREATE) {
+                    f[0] =file;
                     Log.d("MediaListenerService", "File created [" + pathToWatch + file + "]");
-                    f[0] = file;
+
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
                         public void run() {
                             Toast.makeText(getBaseContext(), file + " was saved!", Toast.LENGTH_LONG).show();
 
-
                         }
                     });
 
                 }
-                Intent i = new Intent(MediaListenerService.this, PopupActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-                i.putExtra("FILEKEY", f[0]);
+                Intent i = new Intent(getApplicationContext(), PopupActivity.class);
+                i.setFlags(FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                i.putExtra("FILEKEY",f[0]);
                 startActivity(i);
             }
         };

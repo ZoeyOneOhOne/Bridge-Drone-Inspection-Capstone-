@@ -46,9 +46,6 @@ public class PopupActivity extends AppCompatActivity {
 
         EditText editText3 = (EditText)findViewById(R.id.editText3);
 
-        Intent i = getIntent();
-        String f = i.getExtras().getString("FILEKEY");
-
 
         File dir = Environment.getExternalStorageDirectory();
         File[] test = new File(dir.getPath() + "/DJI/dji.go.v4/CACHE_IMAGE").listFiles();
@@ -57,6 +54,9 @@ public class PopupActivity extends AppCompatActivity {
             list += file.getName();
         }
         editText3.setText(list);
+
+        Intent i = getIntent();
+        String f = i.getExtras().getString("FILEKEY");
         Bitmap bitmap = BitmapFactory.decodeFile(dir.getPath() + "/DJI/dji.go.v4/CACHE_IMAGE/" + f);
        Log.i("Image Height", "" + bitmap.getHeight());
         ImageView imageView = (ImageView) this.findViewById(R.id.imageView3);
