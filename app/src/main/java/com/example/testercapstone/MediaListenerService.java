@@ -31,14 +31,13 @@ public class MediaListenerService extends Service {
     private void startWatching() {
 
         //The desired path to watch or monitor
-        //E.g Camera folder
         final String pathToWatch = android.os.Environment.getExternalStorageDirectory().toString() + "/DJI/dji.go.v4/CACHE_IMAGE";
         Toast.makeText(this, "My Service Started and trying to watch " + pathToWatch, Toast.LENGTH_LONG).show();
 
         observer = new FileObserver(pathToWatch, FileObserver.ALL_EVENTS) { // set up a file observer to watch this directory
             @Override
             public void onEvent(int event, final String file) {
-                if (event == FileObserver.CREATE) { // check that it's not equal to .probe because thats created every time camera is launched
+                if (event == FileObserver.CREATE) { 
                     Log.d("MediaListenerService", "File created [" + pathToWatch + file + "]");
 
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
