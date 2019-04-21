@@ -33,13 +33,13 @@ public class MediaListenerService extends Service {
         //The desired path to watch or monitor
         final String pathToWatch = android.os.Environment.getExternalStorageDirectory().toString() + "/DJI/dji.go.v4/CACHE_IMAGE";
         Toast.makeText(this, "My Service Started and trying to watch " + pathToWatch, Toast.LENGTH_LONG).show();
-
+        final String[] f = new String[1];
         observer = new FileObserver(pathToWatch, FileObserver.ALL_EVENTS) { // set up a file observer to watch this directory
             @Override
             public void onEvent(int event, final String file) {
-                if (event == FileObserver.CREATE) { 
+                if (event == FileObserver.CREATE) {
                     Log.d("MediaListenerService", "File created [" + pathToWatch + file + "]");
-
+                    f[0] = file;
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
                         public void run() {
@@ -49,9 +49,11 @@ public class MediaListenerService extends Service {
                         }
                     });
 
-                    Intent i = new Intent(getApplicationContext(), PopupActivity.class);
-                    startActivity(i);
                 }
+                Intent i = new Intent(MediaListenerService.this, PopupActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                i.putExtra("FILEKEY", f[0]);
+                startActivity(i);
             }
         };
         observer.startWatching();

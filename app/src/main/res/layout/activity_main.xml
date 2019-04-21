@@ -37,7 +37,7 @@
         android:layout_marginEnd="125dp"
         android:layout_marginBottom="279dp"
         android:background="@color/design_default_color_primary"
-        android:text="button"
+        android:text="Enter"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

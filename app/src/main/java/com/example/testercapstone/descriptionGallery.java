@@ -19,8 +19,8 @@ public class descriptionGallery extends AppCompatActivity {
         setContentView(R.layout.activity_description_gallery);
         selectedImageView2 = (ImageView) findViewById(R.id.selectedImageView2); // get the reference of ImageView
         //every new file path you will make a dronemeta object for that file
-        File test = new File("test.jpg");
-        DroneMeta meta = new DroneMeta(test);
+        //File test = new File("test.jpg");
+        //DroneMeta meta = new DroneMeta(test);
 
         Intent i = getIntent();
         final int b = i.getIntExtra("KEY",0);
