@@ -51,12 +51,12 @@ public class MediaListenerService extends Service {
 
                         }
                     });
-
+                    Intent i = new Intent(getApplicationContext(), PopupActivity.class);
+                    i.setFlags(FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    i.putExtra("FILEKEY",f[0]);
+                    startActivity(i);
                 }
-                Intent i = new Intent(getApplicationContext(), PopupActivity.class);
-                i.setFlags(FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                i.putExtra("FILEKEY",f[0]);
-                startActivity(i);
+
             }
         };
         observer.startWatching();

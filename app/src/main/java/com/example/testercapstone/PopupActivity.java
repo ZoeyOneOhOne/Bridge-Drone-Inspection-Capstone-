@@ -48,17 +48,12 @@ public class PopupActivity extends AppCompatActivity {
 
 
         File dir = Environment.getExternalStorageDirectory();
-        File[] test = new File(dir.getPath() + "/DJI/dji.go.v4/CACHE_IMAGE").listFiles();
-        String list = "";
-        for(File file:test){
-            list += file.getName();
-        }
-        editText3.setText(list);
 
         Intent i = getIntent();
         String f = i.getExtras().getString("FILEKEY");
         Bitmap bitmap = BitmapFactory.decodeFile(dir.getPath() + "/DJI/dji.go.v4/CACHE_IMAGE/" + f);
-       Log.i("Image Height", "" + bitmap.getHeight());
+        while(bitmap == null);
+        Log.i("Image Height", "" + bitmap.getHeight());
         ImageView imageView = (ImageView) this.findViewById(R.id.imageView3);
         imageView.setImageBitmap(bitmap);
     }
