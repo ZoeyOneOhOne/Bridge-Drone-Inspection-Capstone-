@@ -21,16 +21,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".PopupActivity"
-            android:theme="@style/AppTheme.PopUp"
-                >
-        </activity>
         <service
             android:name="MediaListenerService"
             android:enabled="true"
             android:exported="false" >
         </service>
+        <activity
+            android:name=".PopupActivity"
+            android:theme="@style/AppTheme.PopUp"
+            >
+        </activity>
     </application>
 </manifest>
