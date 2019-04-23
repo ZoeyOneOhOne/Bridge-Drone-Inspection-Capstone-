@@ -38,6 +38,7 @@ public class PopupActivity extends AppCompatActivity {
         params.gravity = Gravity.CENTER;
         params.x = 0;
         params.y = -20;
+        //params.type=WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
 
         getWindow().setAttributes(params);
 

@@ -36,17 +36,18 @@ public class picGalleryActivity extends AppCompatActivity {
     ImageView selectedImageView;
     Button readButton;
     // array of images
-    int[] images = {R.drawable.image1, R.drawable.image2, R.drawable.image3, R.drawable.image4};
+    //int[] images = {R.drawable.image1, R.drawable.image2, R.drawable.image3, R.drawable.image4};
     ArrayList <Bitmap> bitmapImages = new ArrayList<Bitmap>();
+    File dir = Environment.getExternalStorageDirectory();
+    String data = dir.getPath() + "/DJI/dji.go.v4/CACHE_IMAGE/";
+    File file = new File(data);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pic_gallery);
 
-        File dir = Environment.getExternalStorageDirectory();
-        String data = dir.getPath() + "/DJI/dji.go.v4/CACHE_IMAGE/";
-        File file = new File(data);
         bitmapImages = traverse(file);
+
 
         simpleGallery = (Gallery) findViewById(R.id.simpleGallery); // get the reference of Gallery
         selectedImageView = (ImageView) findViewById(R.id.selectedImageView); // get the reference of ImageView
