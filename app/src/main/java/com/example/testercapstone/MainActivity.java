@@ -1,7 +1,10 @@
 package com.example.testercapstone;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Environment;
 import android.os.FileObserver;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,17 +28,6 @@ public class MainActivity extends AppCompatActivity {
         loginbtn = (Button) findViewById(R.id.loginbtn);
         inspText = (EditText) findViewById(R.id.inspText);
         startService(new Intent(getBaseContext(), MediaListenerService.class));
-
-        //this is to try and listen to the file and then pull up the opop up activity wiht the intent
-        /*FileObserver observer = new FileObserver(android.os.Environment.getExternalStorageDirectory().toString() + "/DJI/dji.go.v4/CACHE_IMAGE") { // set up a file observer to watch this directory on sd card
-            @Override
-            public void onEvent(int event, String file) {
-                if(event == FileObserver.CREATE){ // check if its a "create"
-                    Log.d(TAG, "File created [" + android.os.Environment.getExternalStorageDirectory().toString() + "/DCIM/100MEDIA/" + file + "]");
-                }
-            }
-        };
-        observer.startWatching();*/
 
         loginbtn.setOnClickListener(new View.OnClickListener(){
             @Override
