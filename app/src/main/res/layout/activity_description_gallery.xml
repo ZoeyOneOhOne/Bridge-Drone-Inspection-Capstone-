@@ -48,7 +48,7 @@
                     android:layout_marginBottom="10dp"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:hint="Desciption"
+                    android:hint="@android:string/untitled"
                     android:inputType="textMultiLine"
                     android:paddingBottom="10dp"
                     tools:layout_editor_absoluteX="8dp"
@@ -68,7 +68,7 @@
                     android:layout_weight="1"
                     android:text="Description:"
                     android:textColor="@color/design_default_color_primary_dark"
-                    android:textSize="24sp"
+                    android:textSize="18sp"
                     tools:layout_editor_absoluteX="8dp"
                     tools:layout_editor_absoluteY="561dp" />
 

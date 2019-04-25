@@ -1,8 +1,10 @@
 package com.example.testercapstone;
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,6 +38,7 @@ public class PopupActivity extends AppCompatActivity {
         params.gravity = Gravity.CENTER;
         params.x = 0;
         params.y = -20;
+        //params.type=WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
 
         getWindow().setAttributes(params);
 
@@ -48,16 +51,15 @@ public class PopupActivity extends AppCompatActivity {
 
 
         File dir = Environment.getExternalStorageDirectory();
-        File[] test = new File(dir.getPath() + "/DJI/dji.go.v4/CACHE_IMAGE").listFiles();
-        String list = "";
-        for(File file:test){
-            list += file.getName();
-        }
-        editText3.setText(list);
-        Bitmap bitmap = BitmapFactory.decodeFile(dir.getPath() + "/DJI/dji.go.v4/CACHE_IMAGE/screen_0b71ffdf1b8a063d_1555435905867.jpg");
+
+        Intent i = getIntent();
+        String f = i.getExtras().getString("FILEKEY");
+        Bitmap bitmap = BitmapFactory.decodeFile(dir.getPath() + "/DJI/dji.go.v4/CACHE_IMAGE/" + f);
+        while(bitmap == null);
         Log.i("Image Height", "" + bitmap.getHeight());
         ImageView imageView = (ImageView) this.findViewById(R.id.imageView3);
         imageView.setImageBitmap(bitmap);
+
     }
 
 

@@ -2,8 +2,10 @@ package com.example.testercapstone;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,6 +25,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 
 public class picGalleryActivity extends AppCompatActivity {
@@ -33,17 +36,23 @@ public class picGalleryActivity extends AppCompatActivity {
     ImageView selectedImageView;
     Button readButton;
     // array of images
-    int[] images = {R.drawable.image1, R.drawable.image2, R.drawable.image3, R.drawable.image4};
+    //int[] images = {R.drawable.image1, R.drawable.image2, R.drawable.image3, R.drawable.image4};
+    ArrayList <Bitmap> bitmapImages = new ArrayList<Bitmap>();
+    File dir = Environment.getExternalStorageDirectory();
+    String data = dir.getPath() + "/DJI/dji.go.v4/CACHE_IMAGE/";
+    File file = new File(data);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pic_gallery);
+
+        bitmapImages = traverse(file);
+
+
         simpleGallery = (Gallery) findViewById(R.id.simpleGallery); // get the reference of Gallery
         selectedImageView = (ImageView) findViewById(R.id.selectedImageView); // get the reference of ImageView
         //customGalleryAdapter = new CustomeGalleryAdapter(getApplicationContext(), images); // initialize the adapter
-        simpleGallery.setAdapter(new CustomeGalleryAdapter(getApplicationContext(), images)); // set the adapter
+        simpleGallery.setAdapter(new CustomeGalleryAdapter(getApplicationContext(), bitmapImages)); // set the adapter
         simpleGallery.setSpacing(10);
         // perform setOnItemClickListener event on the Gallery
        simpleGallery.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -51,7 +60,7 @@ public class picGalleryActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // set the selected image in the ImageView
                 Intent i = new Intent(getApplicationContext(),descriptionGallery.class);
-                selectedImageView.setImageResource(images[position]);
+                selectedImageView.setImageBitmap(bitmapImages.get(position));
                 int j = position;
                 i.putExtra("KEY", j);
                 startActivity(i);
@@ -62,7 +71,7 @@ public class picGalleryActivity extends AppCompatActivity {
         Intent i = getIntent();
         final int b = i.getIntExtra("STRING",0);
 
-        selectedImageView.setImageResource(images[b]);
+        selectedImageView.setImageBitmap(bitmapImages.get(b));
 
         //Implementing Cole's read/write stuff
 
@@ -108,6 +117,21 @@ public class picGalleryActivity extends AppCompatActivity {
         } else{
             return false;
         }
+    }
+//traverse the directory for the files
+    private ArrayList<Bitmap> traverse (File d)
+    {
+        ArrayList<Bitmap> b = new ArrayList<Bitmap>();
+        if(d.exists())
+        {
+            File[] files = d.listFiles();
+            for(int i = 0; i < files.length; i++)
+            {
+                Bitmap bitmap = BitmapFactory.decodeFile(String.valueOf(files[i]));
+                b.add(bitmap);
+            }
+        }
+        return b;
     }
 
 }
