@@ -42,7 +42,7 @@
                     tools:layout_editor_absoluteY="460dp" />
 
                 <EditText
-                    android:id="@+id/editText2"
+                    android:id="@+id/titleText"
                     android:layout_width="394dp"
                     android:layout_height="77dp"
                     android:layout_marginBottom="10dp"
@@ -73,7 +73,7 @@
                     tools:layout_editor_absoluteY="561dp" />
 
                 <EditText
-                    android:id="@+id/editText5"
+                    android:id="@+id/descrText"
                     android:layout_width="394dp"
                     android:layout_height="77dp"
                     android:layout_marginBottom="20dp"
