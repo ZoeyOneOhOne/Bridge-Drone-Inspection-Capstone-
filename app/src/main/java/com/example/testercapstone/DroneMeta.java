@@ -24,7 +24,7 @@ public class DroneMeta {
 	JpegXmpRewriter metaWrite;
 	File file;
 
-	/** Creates an instance of DroneMeta to read MetaData from 'file'
+	/** Creates an instance of DroneMeta to read com.example.testercapstone.MetaData from 'file'
 	* @param file The file to access metadata of*/
 	public DroneMeta(File file) { 
 		this.file = file;
