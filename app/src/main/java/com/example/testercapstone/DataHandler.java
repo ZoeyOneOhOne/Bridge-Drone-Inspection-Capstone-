@@ -1,5 +1,7 @@
 package com.example.testercapstone;
 
+import android.content.Context;
+
 import org.apache.sanselan.ImageReadException;
 import org.apache.sanselan.ImageWriteException;
 
@@ -7,13 +9,21 @@ import java.io.IOException;
 
 public class DataHandler {
 
-    public static boolean isLoaded(String filename, DroneMeta meta){
+    int inspID;
+    private TempStor ts;
+
+    public DataHandler(int inspID, Context context){
+        ts = new TempStor(context);
+        this.inspID = inspID;
+    }
+
+    public boolean isLoaded(String filename, DroneMeta meta){
         if(meta.getGPS() == null)
             return false;
         else return true;
     }
 
-    public static void writeTitle(String title, String filename, DroneMeta meta){
+    public void writeTitle(String title, String filename, DroneMeta meta){
         if(isLoaded(filename,meta)){
             //Access metadata
             try {
@@ -27,11 +37,16 @@ public class DataHandler {
             }
         }else{
             //Access db
-
+            if(ts.getByLocation(filename).length == 0){
+                ts.add(filename,inspID,title,"");
+            }else{
+                int photoID = ts.getByLocation(filename)[0].photoID;
+                ts.editTitle(title,photoID);
+            }
         }
     }
 
-    public static void writeComment(String comment, String filename, DroneMeta meta){
+    public void writeComment(String comment, String filename, DroneMeta meta){
         if(isLoaded(filename,meta)){
             //Access metadata
             try {
@@ -45,11 +60,16 @@ public class DataHandler {
             }
         }else{
             //Access db
-
+            if(ts.getByLocation(filename).length == 0){
+                ts.add(filename,inspID,"",comment);
+            }else{
+                int photoID = ts.getByLocation(filename)[0].photoID;
+                ts.editComment(comment,photoID);
+            }
         }
     }
 
-    public static int readInspID(String filename, DroneMeta meta){
+    public int readInspID(String filename, DroneMeta meta){
         if(isLoaded(filename,meta)){
             //Access metadata
             try {
@@ -62,11 +82,14 @@ public class DataHandler {
             return 0;
         }else{
             //Access db
-            return 0;
+            MetaData[] data = ts.getByLocation(filename);
+            if(data.length > 0)
+                return data[0].inspID;
+            else return -1;
         }
     }
 
-    public static String readTitle(String filename, DroneMeta meta){
+    public String readTitle(String filename, DroneMeta meta){
         if(isLoaded(filename,meta)){
             //Access metadata
             try {
@@ -79,11 +102,14 @@ public class DataHandler {
             return null;
         }else{
             //Access db
-            return null;
+            MetaData[] data = ts.getByLocation(filename);
+            if(data.length > 0)
+                return data[0].title;
+            else return null;
         }
     }
 
-    public static String readComment(String filename, DroneMeta meta){
+    public String readComment(String filename, DroneMeta meta){
         if(isLoaded(filename,meta)){
             //Access metadata
             try {
@@ -96,7 +122,10 @@ public class DataHandler {
             return null;
         }else{
             //Access db
-            return null;
+            MetaData[] data = ts.getByLocation(filename);
+            if(data.length > 0)
+                return data[0].comment;
+            else return null;
         }
     }
 }

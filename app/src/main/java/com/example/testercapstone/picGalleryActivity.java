@@ -38,6 +38,7 @@ public class picGalleryActivity extends AppCompatActivity {
     // array of images
     //int[] images = {R.drawable.image1, R.drawable.image2, R.drawable.image3, R.drawable.image4};
     ArrayList <Bitmap> bitmapImages = new ArrayList<Bitmap>();
+    ArrayList <String> imageFilenames = new ArrayList<String>();
     File dir = Environment.getExternalStorageDirectory();
     String data = dir.getPath() + "/DJI/dji.go.v4/CACHE_IMAGE/";
     File file = new File(data);
@@ -61,8 +62,9 @@ public class picGalleryActivity extends AppCompatActivity {
                 // set the selected image in the ImageView
                 Intent i = new Intent(getApplicationContext(),descriptionGallery.class);
                 selectedImageView.setImageBitmap(bitmapImages.get(position));
-                int j = position;
-                i.putExtra("KEY", j);
+                String filename = imageFilenames.get(position);
+                i.putExtra("KEY", position);
+                i.putExtra("Filename", filename);
                 startActivity(i);
 
             }
@@ -127,6 +129,7 @@ public class picGalleryActivity extends AppCompatActivity {
             File[] files = d.listFiles();
             for(int i = 0; i < files.length; i++)
             {
+                imageFilenames.add(files[i].getName());
                 Bitmap bitmap = BitmapFactory.decodeFile(String.valueOf(files[i]));
                 b.add(bitmap);
             }

@@ -46,7 +46,7 @@ public class MediaListenerService extends Service {
             public void onEvent(int event, final String file) {
                 if (event == FileObserver.CREATE) {
                     f[0] =file;
-                    Log.d("MediaListenerService", "File created [" + pathToWatch + file + "]");
+                    Log.d("MediaListenerService", "File created [" + pathToWatch +"/"+ file + "]");
 
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
@@ -55,13 +55,16 @@ public class MediaListenerService extends Service {
 
                         }
                     });
-                    Intent i = new Intent(getApplicationContext(), PopupActivity.class);
+                    if(file.matches(".*\\.[jJ][pP][gG]")) {
 
-                    i.setFlags(FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                    i.putExtra("FILEKEY",f[0]);
-                    i.putExtra("Inspection_ID",inspID);
+                        Intent i = new Intent(getApplicationContext(), PopupActivity.class);
 
-                    startActivity(i);
+                        i.setFlags(FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        i.putExtra("FILEKEY", f[0]);
+                        i.putExtra("Inspection_ID", inspID);
+
+                        startActivity(i);
+                    }
                 }
 
             }

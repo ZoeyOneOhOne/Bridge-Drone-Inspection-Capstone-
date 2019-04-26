@@ -142,6 +142,8 @@ public class DroneMeta {
 	public GPSData getGPS() { 
 		try {
 			IImageMetadata imgMeta = Sanselan.getMetadata(file);
+			if(imgMeta == null)
+				return null;
 			JpegImageMetadata jpgMeta = (JpegImageMetadata) imgMeta;
 			TiffImageMetadata jpgExif = jpgMeta.getExif();
 			GPSInfo jpgGPS = jpgExif.getGPS();

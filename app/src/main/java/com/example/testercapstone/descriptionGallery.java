@@ -16,16 +16,24 @@ import org.apache.sanselan.ImageReadException;
 import org.apache.sanselan.ImageWriteException;
 
 import java.io.File;
+import java.io.IOException;
 
 public class descriptionGallery extends AppCompatActivity {
     ImageView selectedImageView2;
     Button backBtn, saveButton;
     EditText titleText, descrText;
     DroneMeta meta;
+    DataHandler dh;
+    int inspID, key;
+    String filename;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_description_gallery);
+
+        key = getIntent().getIntExtra("KEY",0);
+        inspID = getIntent().getIntExtra("Inspection_ID",0);
+        filename = getIntent().getStringExtra("Filename");
 
         saveButton = (Button) findViewById(R.id.saveButton);
 
@@ -33,27 +41,20 @@ public class descriptionGallery extends AppCompatActivity {
         //every new file path you will make a dronemeta object for that file
         File root = Environment.getExternalStorageDirectory();
         String path = "/DJI/dji.go.v4/CACHE_IMAGE/";
-        String filename = "test.jpg";
         File image = new File(root.getPath() + path + filename);
-        meta = new DroneMeta(image);
+
+        meta = new DroneMeta(new File(root.getPath() + path + filename));
+        dh = new DataHandler(inspID, getApplicationContext());
 
         Bitmap bitmap = BitmapFactory.decodeFile(image.getPath());
-        Intent i = getIntent();
-        final int b = i.getIntExtra("KEY",0);
 
         selectedImageView2.setImageBitmap(bitmap);
 
         titleText = (EditText) findViewById(R.id.titleText);
         descrText = (EditText) findViewById(R.id.descrText);
 
-        try {
-            titleText.setText(meta.readTag("title"));
-            descrText.setText(meta.readComment());
-        } catch (ImageReadException e) {
-            Log.e("MetaData Error",e.getMessage());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        titleText.setText(dh.readTitle(filename,meta));
+        descrText.setText(dh.readComment(filename,meta));
 
         backBtn = (Button) findViewById(R.id.backBtn);
 
@@ -61,7 +62,7 @@ public class descriptionGallery extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 Intent i = new Intent(getApplicationContext(),picGalleryActivity.class);
-                i.putExtra("STRING", b);
+                i.putExtra("STRING", key);
                 startActivity(i);
             }
         });
@@ -69,17 +70,8 @@ public class descriptionGallery extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                try {
-                    meta.writeTag("title",titleText.getText().toString());
-                    meta.writeComment(descrText.getText().toString());
-                } catch (ImageReadException e) {
-                    e.printStackTrace();
-                } catch (ImageWriteException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
+                dh.writeTitle(titleText.getText().toString(),filename,meta);
+                dh.writeComment(descrText.getText().toString(),filename,meta);
             }
         });
 

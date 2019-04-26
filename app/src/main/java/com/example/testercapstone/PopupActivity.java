@@ -1,10 +1,8 @@
 package com.example.testercapstone;
 
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +18,11 @@ import java.io.File;
 //NOTE: Alt + Enter will auto import the one you need.
 
 public class PopupActivity extends AppCompatActivity {
+
+    EditText title, comment;
+    DroneMeta meta;
+    DataHandler dh;
+    String f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,19 +50,30 @@ public class PopupActivity extends AppCompatActivity {
 
         //Cole's code to access the DJI GO 4 folder and put the images on a bitmap in an imageView.
 
-        EditText editText3 = (EditText)findViewById(R.id.editText3);
-
+        title = (EditText)findViewById(R.id.popupTitle);
+        comment = (EditText)findViewById(R.id.popupComment);
 
         File dir = Environment.getExternalStorageDirectory();
 
         Intent i = getIntent();
-        String f = i.getExtras().getString("FILEKEY");
+        f = i.getExtras().getString("FILEKEY");
+        int inspID = i.getIntExtra("Inspection_ID",0);
+        meta = new DroneMeta(new File(dir.getPath() + "/DJI/dji.go.v4/CACHE_IMAGE/" + f));
+        dh = new DataHandler(inspID,getBaseContext());
         Bitmap bitmap = BitmapFactory.decodeFile(dir.getPath() + "/DJI/dji.go.v4/CACHE_IMAGE/" + f);
         while(bitmap == null);
         Log.i("Image Height", "" + bitmap.getHeight());
         ImageView imageView = (ImageView) this.findViewById(R.id.imageView3);
         imageView.setImageBitmap(bitmap);
 
+        Button submit = (Button) findViewById(R.id.popupButton);
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dh.writeTitle(title.getText().toString(),f,meta);
+                dh.writeComment(comment.getText().toString(),f,meta);
+            }
+        });
     }
 
 

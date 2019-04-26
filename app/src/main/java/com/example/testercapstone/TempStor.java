@@ -77,7 +77,30 @@ public class TempStor {
         }
         cursor.close();
 
-        MetaData[] temp = new MetaData[2];
+        MetaData[] temp = new MetaData[0];
+        return entries.toArray(temp);
+    }
+
+    public MetaData[] getByInspID(int inspID){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String[] selectionArgs = {"" + inspID};
+
+        Cursor cursor = db.query("Photo",null,"Inspection_ID = ?",selectionArgs,null,null,null);
+        List<MetaData> entries = new ArrayList<MetaData>();
+
+        while(cursor.moveToNext()){
+            MetaData newMeta = new MetaData();
+            newMeta.photoID = cursor.getInt(0);
+            newMeta.location = cursor.getString(1);
+            newMeta.inspID = cursor.getInt(2);
+            newMeta.title = cursor.getString(3);
+            newMeta.comment = cursor.getString(4);
+            entries.add(newMeta);
+        }
+        cursor.close();
+
+        MetaData[] temp = new MetaData[0];
         return entries.toArray(temp);
     }
 
@@ -99,22 +122,46 @@ public class TempStor {
         return newMeta;
     }
 
-    public MetaData getByLocation(String location){
+    public MetaData[] getByLocation(String location){
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         String[] selectionArgs = {location};
 
         Cursor cursor = db.query("Photo",null,"Location = ?",selectionArgs,null,null,null);
-        cursor.moveToNext();
+        List<MetaData> entries = new ArrayList<MetaData>();
 
-        MetaData newMeta = new MetaData();
-        newMeta.photoID = cursor.getInt(0);
-        newMeta.location = cursor.getString(1);
-        newMeta.inspID = cursor.getInt(2);
-        newMeta.title = cursor.getString(3);
-        newMeta.comment = cursor.getString(4);
+        while(cursor.moveToNext()){
+            MetaData newMeta = new MetaData();
+            newMeta.photoID = cursor.getInt(0);
+            newMeta.location = cursor.getString(1);
+            newMeta.inspID = cursor.getInt(2);
+            newMeta.title = cursor.getString(3);
+            newMeta.comment = cursor.getString(4);
+            entries.add(newMeta);
+        }
+        cursor.close();
 
-        return newMeta;
+        MetaData[] temp = new MetaData[0];
+        return entries.toArray(temp);
     }
 
+    public void editTitle(String title, int photoID){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+        cv.put("Title",title);
+        String[] selectionArgs = {"" + photoID};
+
+        db.update("Photo",cv,"Photo_ID = ?",selectionArgs);
+    }
+
+    public void editComment(String comment, int photoID){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+        cv.put("Comment",comment);
+        String[] selectionArgs = {"" + photoID};
+
+        db.update("Photo",cv,"Photo_ID = ?",selectionArgs);
+    }
 }
