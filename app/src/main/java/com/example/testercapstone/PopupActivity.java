@@ -23,6 +23,7 @@ public class PopupActivity extends AppCompatActivity {
     DroneMeta meta;
     DataHandler dh;
     String f;
+    PopupActivity me = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +73,7 @@ public class PopupActivity extends AppCompatActivity {
             public void onClick(View v) {
                 dh.writeTitle(title.getText().toString(),f,meta);
                 dh.writeComment(comment.getText().toString(),f,meta);
+                me.finish();
             }
         });
     }

@@ -42,6 +42,13 @@ public class picGalleryActivity extends AppCompatActivity {
     File dir = Environment.getExternalStorageDirectory();
     String data = dir.getPath() + "/DJI/dji.go.v4/CACHE_IMAGE/";
     File file = new File(data);
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        bitmapImages = traverse(file);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
