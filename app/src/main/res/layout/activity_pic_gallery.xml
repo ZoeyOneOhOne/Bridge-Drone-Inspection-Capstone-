@@ -23,7 +23,7 @@
         android:unselectedAlpha="0.80" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/downloadButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Download all" />

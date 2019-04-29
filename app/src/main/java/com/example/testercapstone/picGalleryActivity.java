@@ -1,6 +1,7 @@
 package com.example.testercapstone;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -26,6 +27,22 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+import dji.common.camera.SettingsDefinitions;
+import dji.common.error.DJIError;
+import dji.common.useraccount.UserAccountState;
+import dji.common.util.CommonCallbacks;
+import dji.log.DJILog;
+import dji.sdk.media.DownloadListener;
+import dji.sdk.media.FetchMediaTaskScheduler;
+import dji.sdk.media.MediaFile;
+import dji.sdk.media.MediaManager;
+import dji.sdk.realname.AppActivationManager;
+import dji.sdk.sdkmanager.DJISDKManager;
+import dji.sdk.useraccount.UserAccountManager;
 
 
 public class picGalleryActivity extends AppCompatActivity {
@@ -34,7 +51,7 @@ public class picGalleryActivity extends AppCompatActivity {
     Gallery simpleGallery;
     CustomeGalleryAdapter customGalleryAdapter;
     ImageView selectedImageView;
-    Button readButton;
+    Button readButton, downloadButton;
     // array of images
     //int[] images = {R.drawable.image1, R.drawable.image2, R.drawable.image3, R.drawable.image4};
     ArrayList <Bitmap> bitmapImages = new ArrayList<Bitmap>();
@@ -42,6 +59,13 @@ public class picGalleryActivity extends AppCompatActivity {
     File dir = Environment.getExternalStorageDirectory();
     String data = dir.getPath() + "/DJI/dji.go.v4/CACHE_IMAGE/";
     File file = new File(data);
+
+    List<MediaFile> mediaFileList = new ArrayList<MediaFile>();
+    MediaManager mMediaManager;
+    MediaManager.FileListState currentFileListState = MediaManager.FileListState.UNKNOWN;
+    ProgressDialog mLoadingDialog;
+    FetchMediaTaskScheduler scheduler;
+    DataHandler dh;
 
     @Override
     protected void onRestart() {
@@ -56,6 +80,12 @@ public class picGalleryActivity extends AppCompatActivity {
 
         bitmapImages = traverse(file);
 
+        MediaManager.FileListStateListener updateFileListStateListener = new MediaManager.FileListStateListener() {
+            @Override
+            public void onFileListStateChange(MediaManager.FileListState state) {
+                currentFileListState = state;
+            }
+        };
 
         simpleGallery = (Gallery) findViewById(R.id.simpleGallery); // get the reference of Gallery
         selectedImageView = (ImageView) findViewById(R.id.selectedImageView); // get the reference of ImageView
@@ -77,6 +107,101 @@ public class picGalleryActivity extends AppCompatActivity {
             }
         });
 
+       downloadButton.setOnClickListener(new View.OnClickListener(){
+
+           @Override
+           public void onClick(View v) {
+               if (DJIApplication.getProductInstance() == null) {
+                   mediaFileList.clear();
+                   Toast.makeText(getBaseContext(), "Drone Disconnected", Toast.LENGTH_LONG).show();
+                   return;
+               } else {
+                   if (null != DJIApplication.getCameraInstance() && DJIApplication.getCameraInstance().isMediaDownloadModeSupported()) {
+                       mMediaManager = DJIApplication.getCameraInstance().getMediaManager();
+                   } else if (null != DJIApplication.getCameraInstance()
+                           && !DJIApplication.getCameraInstance().isMediaDownloadModeSupported()) {
+                       Toast.makeText(getBaseContext(), "Download not supported", Toast.LENGTH_LONG).show();
+                       return;
+                   }
+               }
+               if (mMediaManager != null) {
+
+                   if ((currentFileListState == MediaManager.FileListState.SYNCING) || (currentFileListState == MediaManager.FileListState.DELETING)){
+                       Toast.makeText(getBaseContext(), "Media Manager is busy.", Toast.LENGTH_LONG).show();
+                   }else{
+
+                       mMediaManager.refreshFileListOfStorageLocation(SettingsDefinitions.StorageLocation.SDCARD, new CommonCallbacks.CompletionCallback() {
+
+                           @Override
+                           public void onResult(DJIError djiError) {
+                               if (null == djiError) {
+                                   //Reset data
+                                   if (currentFileListState != MediaManager.FileListState.INCOMPLETE) {
+                                       mediaFileList.clear();
+                                   }
+
+                                   mediaFileList = mMediaManager.getSDCardFileListSnapshot();
+                                   Collections.sort(mediaFileList, new Comparator<MediaFile>() {
+                                       @Override
+                                       public int compare(MediaFile lhs, MediaFile rhs) {
+                                           if (lhs.getTimeCreated() < rhs.getTimeCreated()) {
+                                               return 1;
+                                           } else if (lhs.getTimeCreated() > rhs.getTimeCreated()) {
+                                               return -1;
+                                           }
+                                           return 0;
+                                       }
+                                   });
+                                   scheduler.resume(new CommonCallbacks.CompletionCallback() {
+                                       @Override
+                                       public void onResult(DJIError error) {
+                                           if (error == null) {
+                                           }
+                                       }
+                                   });
+                               } else {
+
+                               }
+                           }
+                       });
+                       File imagePath = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                       for(MediaFile file: mediaFileList){
+                           TempStor ts = new TempStor(getApplicationContext());
+                           MetaData[] files = ts.getByLocation(file.getFileName());
+                            if( files.length > 0){
+                                file.fetchFileData(new File(imagePath.getPath() + "/Capstone"), file.getFileName(), new DownloadListener<String>() {
+                                    @Override
+                                    public void onStart() {
+                                        
+                                    }
+
+                                    @Override
+                                    public void onRateUpdate(long l, long l1, long l2) {
+
+                                    }
+
+                                    @Override
+                                    public void onProgress(long l, long l1) {
+
+                                    }
+
+                                    @Override
+                                    public void onSuccess(String s) {
+
+                                    }
+
+                                    @Override
+                                    public void onFailure(DJIError djiError) {
+
+                                    }
+                                });
+                            }
+                       }
+                   }
+               }
+           }
+       });
+
         Intent i = getIntent();
         final int b = i.getIntExtra("STRING",0);
 
@@ -86,6 +211,7 @@ public class picGalleryActivity extends AppCompatActivity {
 
 
         readButton = (Button) findViewById(R.id.readButton);
+        downloadButton = findViewById(R.id.downloadButton);
 
         readButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,7 +223,7 @@ public class picGalleryActivity extends AppCompatActivity {
 
         //Testing passing variables between activities
         int test = getIntent().getIntExtra("Inspection_ID",0);
-        Log.i("Inspection ID","" + test);
+        dh = new DataHandler(test,getApplicationContext());
     }
 
 
