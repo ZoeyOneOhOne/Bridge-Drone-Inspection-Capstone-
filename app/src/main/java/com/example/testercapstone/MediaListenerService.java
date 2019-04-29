@@ -1,12 +1,20 @@
 package com.example.testercapstone;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.Service;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Build;
+import android.os.Environment;
 import android.os.FileObserver;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 import java.io.File;
 
@@ -38,6 +46,7 @@ public class MediaListenerService extends Service {
         final String[] f = new String[1];
 
         observer = new FileObserver(pathToWatch, FileObserver.ALL_EVENTS) { // set up a file observer to watch this directory
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onEvent(int event, final String file) {
                 if (event == FileObserver.CREATE) {
@@ -52,9 +61,10 @@ public class MediaListenerService extends Service {
                         }
                     });
                     Intent i = new Intent(getApplicationContext(), PopupActivity.class);
-                    i.setFlags(FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    i.setFlags(FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
                     i.putExtra("FILEKEY",f[0]);
                     startActivity(i);
+
                 }
 
             }

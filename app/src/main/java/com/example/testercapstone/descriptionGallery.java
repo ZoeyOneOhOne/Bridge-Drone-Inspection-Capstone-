@@ -60,8 +60,10 @@ public class descriptionGallery extends AppCompatActivity {
             File[] files = d.listFiles();
             for(int i = 0; i < files.length; i++)
             {
-                Bitmap bitmap = BitmapFactory.decodeFile(String.valueOf(files[i]));
-                b.add(bitmap);
+                if(files[i].isFile()) {
+                    Bitmap bitmap = BitmapFactory.decodeFile(String.valueOf(files[i]));
+                    b.add(bitmap);
+                }
             }
         }
         return b;

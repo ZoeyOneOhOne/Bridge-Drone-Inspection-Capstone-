@@ -1,5 +1,6 @@
 package com.example.testercapstone;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -29,15 +31,18 @@ public class PopupActivity extends AppCompatActivity {
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
 
+
         int width = dm.widthPixels;
         int height = dm.heightPixels;
 
         getWindow().setLayout((int) (width*.8), (int) (height*.7));
+        getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
 
         WindowManager.LayoutParams params = getWindow().getAttributes();
         params.gravity = Gravity.CENTER;
         params.x = 0;
         params.y = -20;
+        //params.type=WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
         //params.type=WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
 
         getWindow().setAttributes(params);
@@ -57,7 +62,7 @@ public class PopupActivity extends AppCompatActivity {
         Bitmap bitmap = BitmapFactory.decodeFile(dir.getPath() + "/DJI/dji.go.v4/CACHE_IMAGE/" + f);
         while(bitmap == null);
         Log.i("Image Height", "" + bitmap.getHeight());
-        ImageView imageView = (ImageView) this.findViewById(R.id.imageView3);
+        ImageView imageView = (ImageView) findViewById(R.id.imageView3);
         imageView.setImageBitmap(bitmap);
 
     }
