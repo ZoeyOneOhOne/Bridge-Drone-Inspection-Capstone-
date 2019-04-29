@@ -136,9 +136,11 @@ public class picGalleryActivity extends AppCompatActivity {
             File[] files = d.listFiles();
             for(int i = 0; i < files.length; i++)
             {
-                imageFilenames.add(files[i].getName());
-                Bitmap bitmap = BitmapFactory.decodeFile(String.valueOf(files[i]));
-                b.add(bitmap);
+                if(files[i].isFile()) {
+                    imageFilenames.add(files[i].getName());
+                    Bitmap bitmap = BitmapFactory.decodeFile(String.valueOf(files[i]));
+                    b.add(bitmap);
+                }
             }
         }
         return b;

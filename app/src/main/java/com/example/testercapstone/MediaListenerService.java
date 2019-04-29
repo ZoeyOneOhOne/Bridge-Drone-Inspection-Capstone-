@@ -59,7 +59,7 @@ public class MediaListenerService extends Service {
 
                         Intent i = new Intent(getApplicationContext(), PopupActivity.class);
 
-                        i.setFlags(FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        i.setFlags(FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         i.putExtra("FILEKEY", f[0]);
                         i.putExtra("Inspection_ID", inspID);
 
