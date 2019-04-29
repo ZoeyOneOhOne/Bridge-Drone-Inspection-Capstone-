@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
         loginbtn = (Button) findViewById(R.id.loginbtn);
         inspText = (EditText) findViewById(R.id.inspText);
+        startService(new Intent(getBaseContext(), MediaListenerService.class));
 
         loginbtn.setOnClickListener(new View.OnClickListener(){
             @Override
