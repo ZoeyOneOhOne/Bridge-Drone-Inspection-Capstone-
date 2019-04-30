@@ -8,50 +8,61 @@
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="297dp"
-        android:layout_height="185dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="399dp"
+        android:layout_height="169dp"
+        android:layout_marginStart="166dp"
+        android:layout_marginTop="47dp"
+        android:layout_marginEnd="166dp"
+        android:layout_marginBottom="21dp"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/popupTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
     <EditText
         android:id="@+id/popupTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="224dp"
+        android:layout_marginStart="208dp"
+        android:layout_marginTop="21dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginBottom="19dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Title"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/popupComment" />
+        app:layout_constraintBottom_toTopOf="@+id/popupComment"
+        app:layout_constraintEnd_toStartOf="@+id/popupButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
     <EditText
         android:id="@+id/popupComment"
-        android:layout_width="334dp"
-        android:layout_height="190dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="336dp"
+        android:layout_height="94dp"
+        android:layout_marginStart="180dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="200dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Comments"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/popupTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/popupButton"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/popupButton"
         android:layout_width="wrap_content"
         android:layout_height="47dp"
+        android:layout_marginStart="35dp"
         android:text="Submit"
         app:layout_constraintBottom_toBottomOf="@+id/popupTitle"
         app:layout_constraintEnd_toEndOf="@+id/popupComment"
+        app:layout_constraintStart_toEndOf="@+id/popupTitle"
         app:layout_constraintTop_toTopOf="@+id/popupTitle"
         app:layout_constraintVertical_bias="0.0" />
 
