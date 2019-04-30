@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +23,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.widget.Toast;
 
+import com.secneo.sdk.Helper;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -33,9 +37,12 @@ import java.util.List;
 
 import dji.common.camera.SettingsDefinitions;
 import dji.common.error.DJIError;
+import dji.common.error.DJISDKError;
 import dji.common.useraccount.UserAccountState;
 import dji.common.util.CommonCallbacks;
 import dji.log.DJILog;
+import dji.sdk.base.BaseComponent;
+import dji.sdk.base.BaseProduct;
 import dji.sdk.media.DownloadListener;
 import dji.sdk.media.FetchMediaTaskScheduler;
 import dji.sdk.media.MediaFile;
@@ -62,7 +69,8 @@ public class picGalleryActivity extends AppCompatActivity {
 
     List<MediaFile> mediaFileList = new ArrayList<MediaFile>();
     MediaManager mMediaManager;
-    MediaManager.FileListState currentFileListState = MediaManager.FileListState.UNKNOWN;
+    //MediaManager.FileListState currentFileListState = MediaManager.FileListState.UNKNOWN;
+    MediaManager.FileListState currentFileListState;
     FetchMediaTaskScheduler scheduler;
     DataHandler dh;
 
@@ -75,16 +83,20 @@ public class picGalleryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_pic_gallery);
+
+        readButton = (Button) findViewById(R.id.readButton);
+        downloadButton = (Button) findViewById(R.id.downloadButton);
 
         bitmapImages = traverse(file);
 
-        MediaManager.FileListStateListener updateFileListStateListener = new MediaManager.FileListStateListener() {
-            @Override
-            public void onFileListStateChange(MediaManager.FileListState state) {
-                currentFileListState = state;
-            }
-        };
+        //MediaManager.FileListStateListener updateFileListStateListener = new MediaManager.FileListStateListener() {
+           // @Override
+          //  public void onFileListStateChange(MediaManager.FileListState state) {
+             //   currentFileListState = state;
+           // }
+        //};
 
         simpleGallery = (Gallery) findViewById(R.id.simpleGallery); // get the reference of Gallery
         selectedImageView = (ImageView) findViewById(R.id.selectedImageView); // get the reference of ImageView
@@ -110,6 +122,71 @@ public class picGalleryActivity extends AppCompatActivity {
 
            @Override
            public void onClick(View v) {
+               DJISDKManager.SDKManagerCallback mDJISDKManagerCallback = new DJISDKManager.SDKManagerCallback() {
+
+                   //Listens to the SDK registration result
+                   @Override
+                   public void onRegister(DJIError error) {
+
+                       if(error == DJISDKError.REGISTRATION_SUCCESS) {
+
+                           Handler handler = new Handler(Looper.getMainLooper());
+                           handler.post(new Runnable() {
+                               @Override
+                               public void run() {
+                                   Toast.makeText(getApplicationContext(), "Register Success", Toast.LENGTH_LONG).show();
+                               }
+                           });
+
+                           DJISDKManager.getInstance().startConnectionToProduct();
+
+                       } else {
+
+                           Handler handler = new Handler(Looper.getMainLooper());
+                           handler.post(new Runnable() {
+
+                               @Override
+                               public void run() {
+                                   Toast.makeText(getApplicationContext(), "Register sdk fails, check network is available", Toast.LENGTH_LONG).show();
+                               }
+                           });
+
+                       }
+                       Log.e("TAG", error.toString());
+                   }
+
+                   @Override
+                   public void onProductDisconnect() {
+                       Log.d("TAG", "onProductDisconnect");
+                   }
+                   @Override
+                   public void onProductConnect(BaseProduct baseProduct) {
+                       Log.d("TAG", String.format("onProductConnect newProduct:%s", baseProduct));
+
+                   }
+                   @Override
+                   public void onComponentChange(BaseProduct.ComponentKey componentKey, BaseComponent oldComponent,
+                                                 BaseComponent newComponent) {
+                       if (newComponent != null) {
+                           newComponent.setComponentListener(new BaseComponent.ComponentListener() {
+
+                               @Override
+                               public void onConnectivityChange(boolean isConnected) {
+                                   Log.d("TAG", "onComponentConnectivityChanged: " + isConnected);
+                               }
+                           });
+                       }
+
+                       Log.d("TAG",
+                               String.format("onComponentChange key:%s, oldComponent:%s, newComponent:%s",
+                                       componentKey,
+                                       oldComponent,
+                                       newComponent));
+
+                   }
+               };
+               DJISDKManager.getInstance().registerApp(getApplicationContext(),mDJISDKManagerCallback);
+               while(!DJISDKManager.getInstance().hasSDKRegistered())
                if (DJIApplication.getProductInstance() == null) {
                    mediaFileList.clear();
                    Toast.makeText(getBaseContext(), "Drone Disconnected", Toast.LENGTH_LONG).show();
@@ -135,9 +212,9 @@ public class picGalleryActivity extends AppCompatActivity {
                            public void onResult(DJIError djiError) {
                                if (null == djiError) {
                                    //Reset data
-                                   if (currentFileListState != MediaManager.FileListState.INCOMPLETE) {
+                                   /*if (currentFileListState != MediaManager.FileListState.INCOMPLETE) {
                                        mediaFileList.clear();
-                                   }
+                                   }*/
 
                                    mediaFileList = mMediaManager.getSDCardFileListSnapshot();
                                    Collections.sort(mediaFileList, new Comparator<MediaFile>() {
@@ -209,8 +286,7 @@ public class picGalleryActivity extends AppCompatActivity {
         //Implementing Cole's read/write stuff
 
 
-        readButton = (Button) findViewById(R.id.readButton);
-        downloadButton = findViewById(R.id.downloadButton);
+
 
         readButton.setOnClickListener(new View.OnClickListener() {
             @Override

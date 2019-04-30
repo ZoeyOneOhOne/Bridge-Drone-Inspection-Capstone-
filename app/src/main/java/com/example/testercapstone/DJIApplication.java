@@ -10,6 +10,8 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.secneo.sdk.Helper;
+
 import dji.common.error.DJIError;
 import dji.common.error.DJISDKError;
 import dji.sdk.base.BaseComponent;
@@ -19,26 +21,14 @@ import dji.sdk.products.Aircraft;
 import dji.sdk.products.HandHeld;
 import dji.sdk.sdkmanager.DJISDKManager;
 
-public class DJIApplication{
+public class DJIApplication extends Application{
 
-    public static final String FLAG_CONNECTION_CHANGE = "fpv_tutorial_connection_change";
+    //public static final String FLAG_CONNECTION_CHANGE = "fpv_tutorial_connection_change";
 
-    private DJISDKManager.SDKManagerCallback mDJISDKManagerCallback;
-    private static BaseProduct mProduct;
-    public Handler mHandler;
-
-    private Application instance;
-
-    public void setContext(Application application) {
-        instance = application;
-    }
-
-    public Context getApplicationContext() {
-        return instance;
-    }
-
-    public DJIApplication() {
-
+    @Override
+    protected void attachBaseContext(Context paramContext) {
+        super.attachBaseContext(paramContext);
+        Helper.install(DJIApplication.this);
     }
 
     /**
@@ -46,9 +36,10 @@ public class DJIApplication{
      * If no product is connected, it returns null.
      */
     public static synchronized BaseProduct getProductInstance() {
-        if (null == mProduct) {
-            mProduct = DJISDKManager.getInstance().getProduct();
-        }
+        BaseProduct mProduct;
+
+        mProduct = DJISDKManager.getInstance().getProduct();
+
         return mProduct;
     }
 
@@ -68,17 +59,12 @@ public class DJIApplication{
         return camera;
     }
 
-
-    private void notifyStatusChange() {
-        mHandler.removeCallbacks(updateRunnable);
-        mHandler.postDelayed(updateRunnable, 500);
-    }
-
     private Runnable updateRunnable = new Runnable() {
 
         @Override
         public void run() {
-            Intent intent = new Intent(FLAG_CONNECTION_CHANGE);
+            //Intent intent = new Intent(FLAG_CONNECTION_CHANGE);
+            Intent intent = new Intent("fpv_tutorial_connection_change");
             getApplicationContext().sendBroadcast(intent);
         }
     };

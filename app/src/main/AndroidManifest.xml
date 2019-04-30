@@ -29,8 +29,9 @@
         android:required="true" />
     <meta-data
         android:name="com.dji.sdk.API_KEY"
-        android:value="0e5ffbeeced1897ed7486c8c" />
+        android:value="a7b9e5cbd927b872a9e61a08" />
     <application
+        android:name=".DJIApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -38,6 +39,22 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <!-- DJI SDK -->
+        <uses-library android:name="com.android.future.usb.accessory" />
+        <activity
+            android:name="dji.sdk.sdkmanager.DJIAoaControllerActivity"
+            android:theme="@android:style/Theme.Translucent" >
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED"
+                android:resource="@xml/accessory_filter" />
+        </activity>
+        <service android:name="dji.sdk.sdkmanager.DJIGlobalService" >
+        </service>
+        <!-- DJI SDK -->
         <activity android:name=".descriptionGallery"></activity>
         <activity android:name=".picGalleryActivity" />
         <activity android:name=".MainActivity">
