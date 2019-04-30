@@ -29,7 +29,7 @@
         android:required="true" />
     <meta-data
         android:name="com.dji.sdk.API_KEY"
-        android:value="" />
+        android:value="0e5ffbeeced1897ed7486c8c" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"

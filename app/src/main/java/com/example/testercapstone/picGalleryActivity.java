@@ -63,7 +63,6 @@ public class picGalleryActivity extends AppCompatActivity {
     List<MediaFile> mediaFileList = new ArrayList<MediaFile>();
     MediaManager mMediaManager;
     MediaManager.FileListState currentFileListState = MediaManager.FileListState.UNKNOWN;
-    ProgressDialog mLoadingDialog;
     FetchMediaTaskScheduler scheduler;
     DataHandler dh;
 
