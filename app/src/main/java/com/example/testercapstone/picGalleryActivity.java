@@ -128,7 +128,7 @@ public class picGalleryActivity extends AppCompatActivity {
                    @Override
                    public void onRegister(DJIError error) {
 
-                       if(error == DJISDKError.REGISTRATION_SUCCESS) {
+                       if (error == DJISDKError.REGISTRATION_SUCCESS) {
 
                            Handler handler = new Handler(Looper.getMainLooper());
                            handler.post(new Runnable() {
@@ -159,11 +159,13 @@ public class picGalleryActivity extends AppCompatActivity {
                    public void onProductDisconnect() {
                        Log.d("TAG", "onProductDisconnect");
                    }
+
                    @Override
                    public void onProductConnect(BaseProduct baseProduct) {
                        Log.d("TAG", String.format("onProductConnect newProduct:%s", baseProduct));
 
                    }
+
                    @Override
                    public void onComponentChange(BaseProduct.ComponentKey componentKey, BaseComponent oldComponent,
                                                  BaseComponent newComponent) {
@@ -185,95 +187,97 @@ public class picGalleryActivity extends AppCompatActivity {
 
                    }
                };
-               DJISDKManager.getInstance().registerApp(getApplicationContext(),mDJISDKManagerCallback);
-               while(!DJISDKManager.getInstance().hasSDKRegistered())
-               if (DJIApplication.getProductInstance() == null) {
-                   mediaFileList.clear();
-                   Toast.makeText(getBaseContext(), "Drone Disconnected", Toast.LENGTH_LONG).show();
-                   return;
-               } else {
-                   if (null != DJIApplication.getCameraInstance() && DJIApplication.getCameraInstance().isMediaDownloadModeSupported()) {
-                       mMediaManager = DJIApplication.getCameraInstance().getMediaManager();
-                   } else if (null != DJIApplication.getCameraInstance()
-                           && !DJIApplication.getCameraInstance().isMediaDownloadModeSupported()) {
-                       Toast.makeText(getBaseContext(), "Download not supported", Toast.LENGTH_LONG).show();
+               DJISDKManager.getInstance().registerApp(getApplicationContext(), mDJISDKManagerCallback);
+               if (DJISDKManager.getInstance().startConnectionToProduct()) {
+                   if (DJIApplication.getProductInstance() == null) {
+                       mediaFileList.clear();
+                       Toast.makeText(getBaseContext(), "Drone Disconnected", Toast.LENGTH_LONG).show();
                        return;
+                   } else {
+                       if (null != DJIApplication.getCameraInstance() && DJIApplication.getCameraInstance().isMediaDownloadModeSupported()) {
+                           mMediaManager = DJIApplication.getCameraInstance().getMediaManager();
+                       } else if (null != DJIApplication.getCameraInstance()
+                               && !DJIApplication.getCameraInstance().isMediaDownloadModeSupported()) {
+                           Toast.makeText(getBaseContext(), "Download not supported", Toast.LENGTH_LONG).show();
+                           return;
+                       }
                    }
-               }
-               if (mMediaManager != null) {
+                   if (mMediaManager != null) {
 
-                   if ((currentFileListState == MediaManager.FileListState.SYNCING) || (currentFileListState == MediaManager.FileListState.DELETING)){
-                       Toast.makeText(getBaseContext(), "Media Manager is busy.", Toast.LENGTH_LONG).show();
-                   }else{
+                       if ((currentFileListState == MediaManager.FileListState.SYNCING) || (currentFileListState == MediaManager.FileListState.DELETING)) {
+                           Toast.makeText(getBaseContext(), "Media Manager is busy.", Toast.LENGTH_LONG).show();
+                       } else {
 
-                       mMediaManager.refreshFileListOfStorageLocation(SettingsDefinitions.StorageLocation.SDCARD, new CommonCallbacks.CompletionCallback() {
+                           mMediaManager.refreshFileListOfStorageLocation(SettingsDefinitions.StorageLocation.SDCARD, new CommonCallbacks.CompletionCallback() {
 
-                           @Override
-                           public void onResult(DJIError djiError) {
-                               if (null == djiError) {
-                                   //Reset data
+                               @Override
+                               public void onResult(DJIError djiError) {
+                                   if (null == djiError) {
+                                       //Reset data
                                    /*if (currentFileListState != MediaManager.FileListState.INCOMPLETE) {
                                        mediaFileList.clear();
                                    }*/
 
-                                   mediaFileList = mMediaManager.getSDCardFileListSnapshot();
-                                   Collections.sort(mediaFileList, new Comparator<MediaFile>() {
-                                       @Override
-                                       public int compare(MediaFile lhs, MediaFile rhs) {
-                                           if (lhs.getTimeCreated() < rhs.getTimeCreated()) {
-                                               return 1;
-                                           } else if (lhs.getTimeCreated() > rhs.getTimeCreated()) {
-                                               return -1;
+                                       mediaFileList = mMediaManager.getSDCardFileListSnapshot();
+                                       Collections.sort(mediaFileList, new Comparator<MediaFile>() {
+                                           @Override
+                                           public int compare(MediaFile lhs, MediaFile rhs) {
+                                               if (lhs.getTimeCreated() < rhs.getTimeCreated()) {
+                                                   return 1;
+                                               } else if (lhs.getTimeCreated() > rhs.getTimeCreated()) {
+                                                   return -1;
+                                               }
+                                               return 0;
                                            }
-                                           return 0;
-                                       }
-                                   });
-                                   scheduler.resume(new CommonCallbacks.CompletionCallback() {
-                                       @Override
-                                       public void onResult(DJIError error) {
-                                           if (error == null) {
+                                       });
+                                       scheduler.resume(new CommonCallbacks.CompletionCallback() {
+                                           @Override
+                                           public void onResult(DJIError error) {
+                                               if (error == null) {
+                                               }
                                            }
-                                       }
-                                   });
-                               } else {
+                                       });
+                                   } else {
 
+                                   }
+                               }
+                           });
+                           File imagePath = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                           for (MediaFile file : mediaFileList) {
+                               TempStor ts = new TempStor(getApplicationContext());
+                               MetaData[] files = ts.getByLocation(file.getFileName());
+                               if (files.length > 0) {
+                                   file.fetchFileData(new File(imagePath.getPath() + "/Capstone"), file.getFileName(), new DownloadListener<String>() {
+                                       @Override
+                                       public void onStart() {
+
+                                       }
+
+                                       @Override
+                                       public void onRateUpdate(long l, long l1, long l2) {
+
+                                       }
+
+                                       @Override
+                                       public void onProgress(long l, long l1) {
+
+                                       }
+
+                                       @Override
+                                       public void onSuccess(String s) {
+
+                                       }
+
+                                       @Override
+                                       public void onFailure(DJIError djiError) {
+
+                                       }
+                                   });
                                }
                            }
-                       });
-                       File imagePath = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-                       for(MediaFile file: mediaFileList){
-                           TempStor ts = new TempStor(getApplicationContext());
-                           MetaData[] files = ts.getByLocation(file.getFileName());
-                            if( files.length > 0){
-                                file.fetchFileData(new File(imagePath.getPath() + "/Capstone"), file.getFileName(), new DownloadListener<String>() {
-                                    @Override
-                                    public void onStart() {
-                                        
-                                    }
-
-                                    @Override
-                                    public void onRateUpdate(long l, long l1, long l2) {
-
-                                    }
-
-                                    @Override
-                                    public void onProgress(long l, long l1) {
-
-                                    }
-
-                                    @Override
-                                    public void onSuccess(String s) {
-
-                                    }
-
-                                    @Override
-                                    public void onFailure(DJIError djiError) {
-
-                                    }
-                                });
-                            }
                        }
                    }
+                   DJISDKManager.getInstance().stopConnectionToProduct();
                }
            }
        });
