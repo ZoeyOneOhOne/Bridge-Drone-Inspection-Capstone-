@@ -46,6 +46,7 @@ public class picGalleryActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
+        //bitmapImages.clear();
         bitmapImages = traverse(file);
     }
 
@@ -55,11 +56,15 @@ public class picGalleryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pic_gallery);
 
         bitmapImages = traverse(file);
+       // if(bitmapImages.size() == 0)
+        //{
+          //  selectedImageView.setImageBitmap(bitmapImages.get(position));
+        //}
 
 
         simpleGallery = (Gallery) findViewById(R.id.simpleGallery); // get the reference of Gallery
         selectedImageView = (ImageView) findViewById(R.id.selectedImageView); // get the reference of ImageView
-        //customGalleryAdapter = new CustomeGalleryAdapter(getApplicationContext(), images); // initialize the adapter
+        customGalleryAdapter = new CustomeGalleryAdapter(getApplicationContext(), bitmapImages); // initialize the adapter
         simpleGallery.setAdapter(new CustomeGalleryAdapter(getApplicationContext(), bitmapImages)); // set the adapter
         simpleGallery.setSpacing(10);
         // perform setOnItemClickListener event on the Gallery

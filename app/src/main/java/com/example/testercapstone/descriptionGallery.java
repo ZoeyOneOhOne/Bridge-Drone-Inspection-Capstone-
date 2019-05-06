@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import org.apache.sanselan.ImageReadException;
 import org.apache.sanselan.ImageWriteException;
@@ -20,7 +21,7 @@ import java.io.IOException;
 
 public class descriptionGallery extends AppCompatActivity {
     ImageView selectedImageView2;
-    Button backBtn, saveButton;
+    Button backBtn, saveButton, deleteButton;
     EditText titleText, descrText;
     DroneMeta meta;
     DataHandler dh;
@@ -36,6 +37,7 @@ public class descriptionGallery extends AppCompatActivity {
         filename = getIntent().getStringExtra("Filename");
 
         saveButton = (Button) findViewById(R.id.saveButton);
+        deleteButton = (Button) findViewById(R.id.deleButton);
 
         selectedImageView2 = (ImageView) findViewById(R.id.selectedImageView2); // get the reference of ImageView
         //every new file path you will make a dronemeta object for that file
@@ -72,6 +74,20 @@ public class descriptionGallery extends AppCompatActivity {
             public void onClick(View view){
                 dh.writeTitle(titleText.getText().toString(),filename,meta);
                 dh.writeComment(descrText.getText().toString(),filename,meta);
+            }
+        });
+
+        deleteButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                File root = Environment.getExternalStorageDirectory();
+                String path = "/DJI/dji.go.v4/CACHE_IMAGE/";
+                File image2 = new File(root.getPath() + path + filename);
+                boolean deleted = image2.delete();
+                Toast.makeText(getBaseContext(),deleted + "was deleted",Toast.LENGTH_LONG).show();
+                Intent i = new Intent(getApplicationContext(),picGalleryActivity.class);
+                i.putExtra("STRING", key);
+                startActivity(i);
             }
         });
 

@@ -41,7 +41,7 @@
                     android:text="Title:"
                     android:textColor="@color/design_default_color_primary_dark"
                     android:textSize="24sp"
-                    app:fontFamily="monospace"
+                    app:fontFamily="sans-serif"
                     tools:layout_editor_absoluteX="8dp"
                     tools:layout_editor_absoluteY="460dp" />
 
@@ -54,6 +54,7 @@
                     android:ems="10"
                     android:hint="@android:string/untitled"
                     android:inputType="textMultiLine"
+                    android:maxLength="36"
                     android:paddingBottom="10dp"
                     tools:layout_editor_absoluteX="8dp"
                     tools:layout_editor_absoluteY="593dp" />
@@ -67,26 +68,26 @@
 
                 <TextView
                     android:id="@+id/textView2"
-                    android:layout_width="268dp"
+                    android:layout_width="237dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Description:"
                     android:textColor="@color/design_default_color_primary_dark"
-                    android:textSize="18sp"
+                    android:textSize="24sp"
                     tools:layout_editor_absoluteX="8dp"
                     tools:layout_editor_absoluteY="561dp" />
 
                 <EditText
                     android:id="@+id/descrText"
                     android:layout_width="394dp"
-                    android:layout_height="77dp"
+                    android:layout_height="130dp"
                     android:layout_marginBottom="20dp"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:hint="Desciption"
+                    android:hint="Comment"
                     android:inputType="textMultiLine"
-                    android:minLines="2"
-                    android:maxLines="8"
+                    android:maxLines="10"
+                    android:minLines="1"
                     tools:layout_editor_absoluteX="8dp"
                     tools:layout_editor_absoluteY="593dp" />
 
@@ -98,29 +99,39 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/button2"
-                    style="@android:style/Widget.Button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Delete"
-                    tools:layout_editor_absoluteX="319dp"
-                    tools:layout_editor_absoluteY="677dp" />
-
-                <Button
                     android:id="@+id/saveButton"
                     style="@android:style/Widget.Button"
-                    android:layout_width="wrap_content"
+                    android:layout_width="128dp"
                     android:layout_height="wrap_content"
-                    android:text="Save"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:text="SAVE"
+                    android:textStyle="bold"
                     tools:layout_editor_absoluteX="231dp"
                     tools:layout_editor_absoluteY="677dp" />
 
                 <Button
-                    android:id="@+id/backBtn"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/deleButton"
+                    style="@android:style/Widget.Button"
+                    android:layout_width="128dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:text="DELETE"
+                    android:textStyle="bold"
+                    tools:layout_editor_absoluteX="319dp"
+                    tools:layout_editor_absoluteY="677dp" />
+
+                <Button
+                    android:id="@+id/backBtn"
+                    style="@android:style/Widget.Button"
+                    android:layout_width="128dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    android:text="Back" />
+                    android:text="BACK"
+                    android:textStyle="bold" />
             </LinearLayout>
 
         </LinearLayout>
