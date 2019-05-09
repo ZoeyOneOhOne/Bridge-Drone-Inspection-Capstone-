@@ -42,7 +42,7 @@ public class picGalleryActivity extends AppCompatActivity {
     Gallery simpleGallery;
     CustomeGalleryAdapter customGalleryAdapter;
     ImageView selectedImageView;
-    Button readButton, downloadButton;
+    Button downloadButton;
     // array of images
     //int[] images = {R.drawable.image1, R.drawable.image2, R.drawable.image3, R.drawable.image4};
     ArrayList<Bitmap> bitmapImages = new ArrayList<Bitmap>();
@@ -127,7 +127,6 @@ public class picGalleryActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_pic_gallery);
 
-        readButton = (Button) findViewById(R.id.readButton);
         downloadButton = (Button) findViewById(R.id.downloadButton);
 
         bitmapImages = traverse(file);
@@ -304,17 +303,6 @@ public class picGalleryActivity extends AppCompatActivity {
         final int b = i.getIntExtra("STRING", 0);
         if(bitmapImages.size() > 0)
             selectedImageView.setImageBitmap(bitmapImages.get(b));
-
-        //Implementing Cole's read/write stuff
-
-
-        readButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), PopupActivity.class);
-                startActivity(i);
-            }
-        });
 
         //Testing passing variables between activities
         int test = getIntent().getIntExtra("Inspection_ID", 0);

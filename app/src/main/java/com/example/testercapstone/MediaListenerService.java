@@ -98,7 +98,7 @@ public class MediaListenerService extends Service {
 
                         }
                     });
-                    if (file.matches(".*\\.[jJ][pP][gG]")) {
+                    if (file.matches("thumb.*\\.[jJ][pP][gG]")) {
 
                         Intent i = new Intent(getApplicationContext(), PopupActivity.class);
 
