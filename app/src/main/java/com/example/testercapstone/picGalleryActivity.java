@@ -50,6 +50,7 @@ public class picGalleryActivity extends AppCompatActivity {
     File dir = Environment.getExternalStorageDirectory();
     String data = dir.getPath() + "/DJI/dji.go.v4/CACHE_IMAGE/";
     File file = new File(data);
+    int inspID;
 
     final File imagePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
     final File path = new File(imagePath.getAbsolutePath() + "/Capstone");
@@ -98,6 +99,7 @@ public class picGalleryActivity extends AppCompatActivity {
                 Log.i("Written Title", thisMeta.title);
                 dm.writeComment(thisMeta.comment);
                 Log.i("Written Comment", thisMeta.comment);
+                ts.delete(thisMeta.photoID);
             } catch (ImageReadException e) {
                 e.printStackTrace();
             } catch (ImageWriteException e) {
@@ -118,18 +120,20 @@ public class picGalleryActivity extends AppCompatActivity {
     protected void onRestart() {
         super.onRestart();
         //bitmapImages.clear();
-        bitmapImages = traverse(file);
+        bitmapImages = traverse();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        inspID = getIntent().getIntExtra("Inspection_ID", 0);
+
         setContentView(R.layout.activity_pic_gallery);
 
         downloadButton = (Button) findViewById(R.id.downloadButton);
 
-        bitmapImages = traverse(file);
+        bitmapImages = traverse();
        // if(bitmapImages.size() == 0)
         //{
           //  selectedImageView.setImageBitmap(bitmapImages.get(position));
@@ -305,8 +309,7 @@ public class picGalleryActivity extends AppCompatActivity {
             selectedImageView.setImageBitmap(bitmapImages.get(b));
 
         //Testing passing variables between activities
-        int test = getIntent().getIntExtra("Inspection_ID", 0);
-        dh = new DataHandler(test, getApplicationContext());
+
     }
 
 
@@ -338,17 +341,16 @@ public class picGalleryActivity extends AppCompatActivity {
     }
 
     //traverse the directory for the files
-    private ArrayList<Bitmap> traverse(File d) {
-        ArrayList<Bitmap> b = new ArrayList<Bitmap>();
-        if (d.exists()) {
-            File[] files = d.listFiles();
-            for (int i = 0; i < files.length; i++) {
-                imageFilenames.add(files[i].getName());
-                Bitmap bitmap = BitmapFactory.decodeFile(String.valueOf(files[i]));
-                b.add(bitmap);
-            }
+    private ArrayList<Bitmap> traverse() {
+        if(ts == null)
+            ts = new TempStor(getApplicationContext());
+        MetaData[] files = ts.getByInspID(inspID);
+        ArrayList<Bitmap> bitmaps = new ArrayList<Bitmap>();
+        for(MetaData filemeta : files){
+            Bitmap filebmp = BitmapFactory.decodeFile(data + filemeta.location);
+            bitmaps.add(filebmp);
         }
-        return b;
+        return bitmaps;
     }
 
 }

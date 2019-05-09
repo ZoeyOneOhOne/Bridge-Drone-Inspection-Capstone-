@@ -60,6 +60,15 @@ public class TempStor {
         return success;
     }
 
+    public void delete(int photoID){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String[] selectionArgs = {"" + photoID};
+
+        db.delete("Photo","Photo_ID = ?",selectionArgs);
+
+    }
+
     public MetaData[] getAll(){
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
