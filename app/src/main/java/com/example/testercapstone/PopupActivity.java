@@ -59,8 +59,12 @@ public class PopupActivity extends AppCompatActivity {
         Intent i = getIntent();
         f = i.getExtras().getString("FILEKEY");
         int inspID = i.getIntExtra("Inspection_ID",0);
+        int droneKey = i.getIntExtra("DRONEKEY",0);
+        String droneName = String.format("DJI_%04d.jpg",droneKey);
         meta = new DroneMeta(new File(dir.getPath() + "/DJI/dji.go.v4/CACHE_IMAGE/" + f));
         dh = new DataHandler(inspID,getBaseContext());
+        dh.writeDroneName(droneName,f);
+        Log.d("Drone Filename", droneName);
         Bitmap bitmap = BitmapFactory.decodeFile(dir.getPath() + "/DJI/dji.go.v4/CACHE_IMAGE/" + f);
         while(bitmap == null);
         Log.i("Image Height", "" + bitmap.getHeight());

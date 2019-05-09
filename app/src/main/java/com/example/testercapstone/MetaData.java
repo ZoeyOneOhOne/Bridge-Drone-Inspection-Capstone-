@@ -6,4 +6,5 @@ public class MetaData {
     int inspID;
     String title;
     String comment;
+    String droneName;
 }

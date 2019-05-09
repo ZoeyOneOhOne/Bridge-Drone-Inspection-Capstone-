@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TempStor {
-    private static final String SQL_CREATE_ENTRIES = "CREATE TABLE Photo (Photo_ID INTEGER PRIMARY KEY, Location TEXT, Inspection_ID int, Title TEXT, Comment TEXT)";
+    private static final String SQL_CREATE_ENTRIES = "CREATE TABLE Photo (Photo_ID INTEGER PRIMARY KEY, Location TEXT, Inspection_ID int, Title TEXT, Comment TEXT, Drone_Name TEXT)";
     private static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS Photo";
 
     DbHelper dbHelper;
@@ -44,7 +44,7 @@ public class TempStor {
         db.execSQL(SQL_CREATE_ENTRIES);
     }
 
-    public long add(String location, int inspID, String title, String comment){
+    public long add(String location, int inspID, String title, String comment, String droneName){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -52,6 +52,7 @@ public class TempStor {
         values.put("Inspection_ID", inspID);
         values.put("Title", title);
         values.put("Comment", comment);
+        values.put("Drone_Name", droneName);
 
         long success = db.insert("Photo",null, values);
 
@@ -73,6 +74,7 @@ public class TempStor {
             newMeta.inspID = cursor.getInt(2);
             newMeta.title = cursor.getString(3);
             newMeta.comment = cursor.getString(4);
+            newMeta.droneName = cursor.getString(5);
             entries.add(newMeta);
         }
         cursor.close();
@@ -96,6 +98,7 @@ public class TempStor {
             newMeta.inspID = cursor.getInt(2);
             newMeta.title = cursor.getString(3);
             newMeta.comment = cursor.getString(4);
+            newMeta.droneName = cursor.getString(5);
             entries.add(newMeta);
         }
         cursor.close();
@@ -118,6 +121,7 @@ public class TempStor {
         newMeta.inspID = cursor.getInt(2);
         newMeta.title = cursor.getString(3);
         newMeta.comment = cursor.getString(4);
+        newMeta.droneName = cursor.getString(5);
 
         return newMeta;
     }
@@ -137,6 +141,31 @@ public class TempStor {
             newMeta.inspID = cursor.getInt(2);
             newMeta.title = cursor.getString(3);
             newMeta.comment = cursor.getString(4);
+            newMeta.droneName = cursor.getString(5);
+            entries.add(newMeta);
+        }
+        cursor.close();
+
+        MetaData[] temp = new MetaData[0];
+        return entries.toArray(temp);
+    }
+
+    public MetaData[] getByDroneName(String location){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String[] selectionArgs = {location};
+
+        Cursor cursor = db.query("Photo",null,"Drone_Name = ?",selectionArgs,null,null,null);
+        List<MetaData> entries = new ArrayList<MetaData>();
+
+        while(cursor.moveToNext()){
+            MetaData newMeta = new MetaData();
+            newMeta.photoID = cursor.getInt(0);
+            newMeta.location = cursor.getString(1);
+            newMeta.inspID = cursor.getInt(2);
+            newMeta.title = cursor.getString(3);
+            newMeta.comment = cursor.getString(4);
+            newMeta.droneName = cursor.getString(5);
             entries.add(newMeta);
         }
         cursor.close();
@@ -160,6 +189,16 @@ public class TempStor {
 
         ContentValues cv = new ContentValues();
         cv.put("Comment",comment);
+        String[] selectionArgs = {"" + photoID};
+
+        db.update("Photo",cv,"Photo_ID = ?",selectionArgs);
+    }
+
+    public void editDroneName(String droneName, int photoID){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+        cv.put("Drone_Name",droneName);
         String[] selectionArgs = {"" + photoID};
 
         db.update("Photo",cv,"Photo_ID = ?",selectionArgs);
