@@ -23,6 +23,17 @@ public class DataHandler {
         else return true;
     }
 
+    public void writeDroneName(String droneName, String filename){
+
+            //Access db
+            if(ts.getByLocation(filename).length == 0){
+                ts.add(filename,inspID,"","",droneName);
+            }else {
+                int photoID = ts.getByLocation(filename)[0].photoID;
+                ts.editDroneName(droneName, photoID);
+            }
+    }
+
     public void writeTitle(String title, String filename, DroneMeta meta){
         if(isLoaded(filename,meta)){
             //Access metadata
@@ -38,7 +49,7 @@ public class DataHandler {
         }else{
             //Access db
             if(ts.getByLocation(filename).length == 0){
-                ts.add(filename,inspID,title,"");
+                ts.add(filename,inspID,title,"","");
             }else{
                 int photoID = ts.getByLocation(filename)[0].photoID;
                 ts.editTitle(title,photoID);
@@ -61,7 +72,7 @@ public class DataHandler {
         }else{
             //Access db
             if(ts.getByLocation(filename).length == 0){
-                ts.add(filename,inspID,"",comment);
+                ts.add(filename,inspID,"",comment,"");
             }else{
                 int photoID = ts.getByLocation(filename)[0].photoID;
                 ts.editComment(comment,photoID);
